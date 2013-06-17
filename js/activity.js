@@ -92,10 +92,29 @@ function CheckboxActivity($, context){
 	},// end createGrid()
 
 	this.getAnswers = function(){
-		alert('getting answers!')
+		var answerArr=[]
+		$('.activity-row').each(function(){
+			var row = $('.interactive', $(this));
+			answerArr.push(row);
+		})
+		this.getColumnAnswers(answerArr);
 	},
 
-	this.getColumnAnswers = function(columnHeader){
+	this.getColumnAnswers = function(answerArr){
+		// create array of objects with column as key
+		// then compare to original objects object
+		var columnAnswers = [];
+			for(i=0;i<this.objects.length;i++){
+				var answerObject = {};
+				var key = that.objects[i].keys()[0];
+				answerObject[key] = [];
+				$(answerArr).each(function(j){
+					answerObject[key].push(answerArr[i][j])
+					columnAnswers.push(answerObject)
+					//columnAnswers[key] = [];
+				})
+				columnAnswers[key][i].push(answerArr[i])
+			}
 	}
 
 	//initialize the activity
