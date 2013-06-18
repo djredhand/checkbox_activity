@@ -10,8 +10,8 @@ function CheckboxActivity($, context){
 	};
 
 	// globals
-	that = this;// we do this so the context of this (instance of the CheckboxActivity) 
-				// can be refferred to when out of scope
+	that = this;// we do this so the context of this (instance of the 
+				//CheckboxActivity) can be refferred to when out of scope
 	this.context = context;
 	this.attrs = ["blank",
 				 "Leads researcher to fixate on details", 
@@ -32,7 +32,8 @@ function CheckboxActivity($, context){
 					{"Document & AV Analysis": [1,2,0,4,5,6]}
 					];
 
-	this.submitButton = $('<button type="button" class="submit-button">Hello</submit>');
+	this.submitButton = $('<button type="button"\
+						   class="submit-button">Hello</submit>');
 	this.createMatches = function(attrs, objects){
 		window.objs= objects;
 		//this function will create the objects();
@@ -103,18 +104,17 @@ function CheckboxActivity($, context){
 	this.getColumnAnswers = function(answerArr){
 		// create array of objects with column as key
 		// then compare to original objects object
-		var columnAnswers = [];
-			for(i=0;i<this.objects.length;i++){
-				var answerObject = {};
-				var key = that.objects[i].keys()[0];
-				answerObject[key] = [];
-				$(answerArr).each(function(j){
-					answerObject[key].push(answerArr[i][j])
-					columnAnswers.push(answerObject)
-					//columnAnswers[key] = [];
-				})
-				columnAnswers[key][i].push(answerArr[i])
+		var returnedColumnSets = []
+		var columnCnt = answerArr[0].length
+		for(i=0;i<columnCnt;i++){
+			var tmpArr = []
+			for(j=0;j<answerArr.length;j++){
+				tmpArr.push($($($(answerArr)[j])[i]).html())
 			}
+			returnedColumnSets.push(tmpArr);
+		}//end for
+			
+		console.log(returnedColumnSets);	
 	}
 
 	//initialize the activity
