@@ -33,7 +33,9 @@ function CheckboxActivity($, context){
 					];
 
 	this.submitButton = $('<button type="button"\
-						   class="submit-button">Hello</submit>');
+						   class="submit-button">Submit</button>');
+	this.clearButton = $('<button type="button"\
+						   class="clear-button">Clear Answers</button>')
 	this.createMatches = function(attrs, objects){
 		window.objs= objects;
 		//this function will create the objects();
@@ -79,15 +81,29 @@ function CheckboxActivity($, context){
 				table.append(columnRow);
 			}
 		})//end .each
+		
 		this.submitButton.click(function(){
 			that.getAnswers();
-		})
+			that.showAnswers();
+		});
+
+		this.clearButton.click(function(){
+			that.clearAnswers();
+		});
+
 		this.context.append(table);
 		this.context.append(this.submitButton)
+		this.context.append(this.clearButton)
 		$('.interactive').click(function(){
-			$(this).toggleClass('marked').append('X');
-			if($(this).text() == 'XX'){
-				$(this).empty();
+			if($(this).children().length > 0){
+				$(this).children().each(function(){
+					if($(this).attr('class')=="user-x"){
+						$(this).parent().empty();
+					}
+				});
+			}else{
+				$(this).toggleClass('marked')
+				.append('<p class="user-x">X</p>');
 			}
 		})
 	},// end createGrid()
@@ -98,7 +114,9 @@ function CheckboxActivity($, context){
 			var row = $('.interactive', $(this));
 			answerArr.push(row);
 		})
-		this.getColumnAnswers(answerArr);
+		sortedAnswers = this.getColumnAnswers(answerArr);
+		window.answers = sortedAnswers;
+		return sortedAnswers;
 	},
 
 	this.getColumnAnswers = function(answerArr){
@@ -109,19 +127,55 @@ function CheckboxActivity($, context){
 		for(i=0;i<columnCnt;i++){
 			var tmpArr = []
 			for(j=0;j<answerArr.length;j++){
-				tmpArr.push($($($(answerArr)[j])[i]).html())
+				tmpArr.push($($($(answerArr)[j])[i]))
 			}
-			returnedColumnSets.push(tmpArr);
+			var column = {}
+			var columnName = this.objects[i].keys()[0]
+			column[columnName] = tmpArr;
+			returnedColumnSets.push(column);
 		}//end for
-			
-		console.log(returnedColumnSets);	
+		return returnedColumnSets;
+	},
+
+	this.showAnswers = function(){
+		$('.interactive').each(function(){
+			var className = $(this).attr('class');
+			var pattrn = /match-0/i;
+			if(className.match(pattrn)){
+
+			}else{
+				//$(this).append('<p class="answr-x">X</p>');
+				if($(this).children().length > 0){
+					$(this).children().each(function(){
+						if($(this).attr('class')=='answr-x' ){
+							console.log($(this).attr('class'))
+						}else{
+							//$(this).parent()
+							.append('<p class="answr-x">X</p>');	
+						}
+
+					})
+					//(this).append('<p class="answr-x">X</p>');
+				}
+				
+				
+			}
+		});
+	},
+
+	this.clearAnswers = function(){
+		$('.interactive').each(function(){
+			$(this).html('');
+		});
 	}
+
 
 	//initialize the activity
 	this.createMatches(this.attrs, this.objects);
 }
 	// create new Checkbox - the arguments are jQuery and 
 	// where the activity should be places on the page
+
 	var activity = new CheckboxActivity($, $('body'));
 	activity.createGrid(activity);
 
