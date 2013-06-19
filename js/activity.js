@@ -144,13 +144,17 @@ function CheckboxActivity($, context){
 			if(className.match(pattrn)){
 
 			}else{
-				//$(this).append('<p class="answr-x">X</p>');
+				$(this).append('<p class="answr-x">X</p>');
 				if($(this).children().length > 0){
+					if($(this).children().length > 1){
+							$(this).find('.answr-x').remove();
+						}
 					$(this).children().each(function(){
+
 						if($(this).attr('class')=='answr-x' ){
-							console.log($(this).attr('class'))
+
 						}else{
-							//$(this).parent()
+							$(this).parent()
 							.append('<p class="answr-x">X</p>');	
 						}
 
