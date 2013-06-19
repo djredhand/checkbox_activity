@@ -10,7 +10,7 @@ function CheckboxActivity($, context){
 	};
 
 	// globals
-	that = this;// we do this so the context of this (instance of the 
+	that = this;// do this so the context of "this" (instance of the 
 				//CheckboxActivity) can be refferred to when out of scope
 	this.context = context;
 	this.attrs = ["blank",
@@ -90,7 +90,6 @@ function CheckboxActivity($, context){
 		this.clearButton.click(function(){
 			that.clearAnswers();
 		});
-
 		this.context.append(table);
 		this.context.append(this.submitButton)
 		this.context.append(this.clearButton)
@@ -151,18 +150,12 @@ function CheckboxActivity($, context){
 						}
 					$(this).children().each(function(){
 
-						if($(this).attr('class')=='answr-x' ){
-
-						}else{
+						if($(this).attr('class')!=='answr-x' ){
 							$(this).parent()
 							.append('<p class="answr-x">X</p>');	
 						}
-
 					})
-					//(this).append('<p class="answr-x">X</p>');
 				}
-				
-				
 			}
 		});
 	},
